@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash'
 import SearchBar from './search_bar'
 import VideoList from './video_list'
 import VideoDetail from './video_detail'
@@ -12,17 +13,23 @@ class App extends Component {
     super(props)
     this.state={ 
       videos: [], 
-      selectedVideo: null
+      selectedVideo: null,
+      term: ''
     }
-    YTSearch({ key: API_KEY, term: 'CR7' }, (videos) => {
+    this.serachVideo(this.state.term)
+  }
+
+  serachVideo(term) {
+    YTSearch({ key: API_KEY, term: term }, (videos) => {
       this.setState({ videos: videos, selectedVideo: videos[0]})
     })
   }
 
   render() {
+    const videoSearch = _.debounce((term) => {this.serachVideo(term)}, 500)
     return (
       <div>
-        <SearchBar/>
+        <SearchBar onSearchVideo={term => videoSearch(term)}/>
         <VideoDetail video={this.state.selectedVideo}/>
         <VideoList 
           onVideoSelect={selectedVideo => this.setState({selectedVideo: selectedVideo})} 

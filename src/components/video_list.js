@@ -17,7 +17,7 @@ class VideoList extends Component {
 
     render() {
         return (
-            <ul className='col-md-20 list-group'>
+            <ul className='col-md-8 list-group'>
                 {this.renderVideoItem()}
             </ul>
         )
